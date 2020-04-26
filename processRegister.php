@@ -2,16 +2,23 @@
 include_once('lib/header.php');
 // collecting  the data
  
-$errorCount = 0;
+// $session_error();
 // verifying the data, validation
 
-$first_name = $_POST['first_name'] != "" ? $_POST['first_name'] : $errorCount++; 
-$last_name = $_POST['last_name'] != "" ? $_POST['last_name'] : $errorCount++;
-$email = $_POST['email'] != "" ? $_POST['email'] : $errorCount++;
-$password = $_POST['password'] != "" ? $_POST['password'] : $errorCount++; 
-$gender = $_POST['gender'] != "" ? $_POST['gender'] : $errorCount++; 
-$designation= $_POST['designation'] != "" ? $_POST['designation'] : $errorCount++; 
-$department = $_POST['department'] != "" ? $_POST['department'] : $errorCount++; 
+$first_name = $_POST['first_name'];
+// != "" ? $_POST['first_name'] : $session_error; 
+$last_name = $_POST['last_name'];
+// != "" ? $_POST['last_name'] : $session_error;
+$email = $_POST['email']; 
+// != "" ? $_POST['email'] : $session_error;
+$password = $_POST['password']; 
+// != "" ? $_POST['password'] : $session_error; 
+$gender = $_POST['gender']; 
+// != "" ? $_POST['gender'] : $session_error; 
+$designation= $_POST['designation'] ;
+// != "" ? $_POST['designation'] : $session_error; 
+$department = $_POST['department'] ;
+// != "" ? $_POST['department'] : $session_error; 
 
 $_SESSION['first_name'] = $first_name;
 $_SESSION['last_name'] = $last_name;
@@ -21,13 +28,40 @@ $_SESSION['gender'] = $gender;
 $_SESSION['designation'] = $designation;
 $_SESSION['department'] = $department;
 
-if($errorCount > 0) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // redirect back and display error
-    $session_error = "You Have " . $errorCount . " error";
-   if ($errorCount > 1) { 
-       $session_error .="s";
-}
-$session_error .= " in your form submission";
+    if (empty($_POST['email'])) {
+		$session_error= 'Please enter your email';
+	} elseif ($_POST['email']){
+	
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$session_error= 'Invalid Email Format';
+		}
+	}else{
+        $email = validator($_POST['email']);
+    }
+    if (empty($_POST['last_name'])) {
+		$session_error = 'Last Name should be filled';
+	} elseif ($_POST['last_name']) {
+		if (!preg_match('/^[a-zA-Z\s]+$/', $last_name)) {
+			$session_error = 'last Name can only contain letters,and white spaces';
+		}
+	} else {
+        $last_name = validator($_POST['last_name']);
+    }
+
+    if (empty($_POST['first_name'])) {
+		$session_error = 'First Name should be filled';
+	} elseif ($_POST['first_name']) {
+		if (!preg_match('/^[a-zA-Z\s]+$/', $first_name)) {
+			$session_error = 'First Name can only contain letters,and white spaces';
+		}
+	} else {
+        $first_name = validator($_POST['first_name']);
+    }
+    
+    
+   
 $_SESSION["error"] = $session_error;
 
     header("Location: register.php ");
@@ -51,11 +85,6 @@ $_SESSION["error"] = $session_error;
 
     ];
     // check if user already exists
-    
-    // assign the next ID to the new user
-    // count($users =>2, next should then be ID 3
-
-    // loop
      
     for($counter = 0; $counter < $countAllUsers; $counter++) {
         $currentUser = $allUsers[$counter];
@@ -82,36 +111,12 @@ $_SESSION["error"] = $session_error;
     header("Location: login.php");
 }
 
-// this is a long way of performing data validation
+function validator($formData) {
+    $formData = trim($formData);
+    $formData = stripslashes($formData);
+    $formData = htmlspecialchars($formData);
+    return $formData;
+ }
 
 
-// $errorArray = [];
-// // verifying the data, validation
-
-// if($first_name == "") {
-//     $errorArray = "first name cant be blank";
-// }
-// if($last_name == "") {
-//     $errorArray = "last name cant be blank";
-// }
-// if($email == "") {
-//     $errorArray = "email cant be blank";
-// }
-// if($password == "") {
-//     $errorArray = "password cant be blank";
-// }
-// if($gender == "") {
-//     $errorArray = "gender cant be blank";
-// }
-// if($designation == "") {
-//     $errorArray = "designation cant be blank";
-// }
-// if($department == "") {
-//     $errorArray = "department cant be blank";
-// }
-
-// print_r($errorArray);
-// saving the data into the database(folder)
-
-// return back to the page with a string status
 ?>

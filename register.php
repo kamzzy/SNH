@@ -30,7 +30,7 @@ if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
 echo "value=" . $_SESSION['first_name'];
     }
 ?>
-type="text"name="first_name" placeholder="First Name" /></p>
+type="text"name="first_name" placeholder="First Name" required /></p>
 <p> <label>Last Name</label><br/>
 <input
 <?php
@@ -38,15 +38,15 @@ type="text"name="first_name" placeholder="First Name" /></p>
 echo "value=" . $_SESSION['last_name'];
     }
 ?>
-type="text"name="last_name" placeholder="Last Name" /></p>
+type="text"name="last_name" placeholder="Last Name"required /></p>
 <p> <label>Email</label><br/>
 <input  <?php
    if(isset($_SESSION['email'])) {
 echo "value=" . $_SESSION['email'];
     }
-?> type="text"name="email" placeholder="Email"  /> </p>
+?> type="text"name="email" placeholder="Email" required  /> </p>
 <p> <label>Password</label><br/>
-<input type="password" name="password" placeholder="Password" /> </p>
+<input type="password" name="password" placeholder="Password" required /> </p>
 
 
 <p>
