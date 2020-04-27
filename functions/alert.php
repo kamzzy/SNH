@@ -14,4 +14,6 @@ function message(){
         session_destroy();
       }
 }
+
+function setAlert($type = 'message, $content' = "")
 ?>

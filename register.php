@@ -1,7 +1,8 @@
+<?php include_once('lib/header.php'); require_once('functions/alert.php');?>
 
 <body>
 
-<?php include_once('lib/header.php'); require_once('functions/alert.php');
+<?php 
 
 if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
   // redirect to dashboard
