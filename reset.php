@@ -1,6 +1,9 @@
 <?php include_once('lib/header.php');
+  require_once('functions/alert.php');
+  require_once('functions/user.php');
 // if token is set
-if ($_SESSION['loggedin'] && !isset($_GET['token']) && !isset($_SESSION['token'])) {
+ 
+if (!$_SESSION['loggedin'] && !isset($_GET['token']) && !isset($_SESSION['token'])) {
     $_SESSION["error"] = "You are not authorized to view that page";
     header("Location: login.php");
 }
@@ -10,14 +13,7 @@ if ($_SESSION['loggedin'] && !isset($_GET['token']) && !isset($_SESSION['token']
 
 <form action="processreset.php" method="POST">
     <p>
-        <?php
-        if (isset($_SESSION['error']) && !empty($_SESSION['error'])) {
-            echo "<span style ='color:red'>" . $_SESSION['error'] . "</span>";
-
-            //  session_unset();
-            session_destroy();
-        }
-        ?>
+        <?php error(); message();?>
     </p>
     <p>
     <?php if(!$_SESSION['loggedin']) { ?>

@@ -1,6 +1,7 @@
 <?php
  
    include_once('lib/header.php'); 
+   require_once('functions/alert.php');
 
 if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
   // redirect to dashboard
@@ -9,24 +10,12 @@ if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
 ?>
 <body>
 <p>
-      <?php 
-   if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
-     echo "<span style='color:green'> " . $_SESSION['message'] . "</span>";
-
-     session_destroy();
-   }
-   ?>
+      <?php message();?>
     <h3><strong>Login</strong></h3>
     
     <form method="POST" action="processLogin.php">
       <p>
-      <?php 
-   if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-     echo "<span style='color:red'> " . $_SESSION['error'] . "</span>";
-
-     session_destroy();
-   }
-   ?>
+      <?php error();?>
       </p>
       <p>
    <label>Email</label><br/>
@@ -44,6 +33,6 @@ if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
 
     </form>
 <?php include('lib/footer.php'); ?>
-
+ 
 </body>
 </html>

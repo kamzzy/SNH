@@ -1,7 +1,7 @@
 
 <body>
 
-<?php include_once('lib/header.php'); 
+<?php include_once('lib/header.php'); require_once('functions/alert.php');
 
 if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
   // redirect to dashboard
@@ -13,16 +13,10 @@ if(isset($_SESSION['loggedIn']) && !empty ($_SESSION['loggedIn'])){
 <h3><strong>Register</strong></h3>
 
 <form method="POST" action="processRegister.php">
-  <p>
-  <?php 
-if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
- echo "<span style='color:red'> " . $_SESSION['error'] . "</span>";
-
- session_destroy();
-}
-?>
-  </p>
-<p>
+  <div>
+  <?php error(); message();?>
+  </div>
+<div>
 <label>First Name</label><br/>
 <input 
 <?php
@@ -30,26 +24,26 @@ if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
 echo "value=" . $_SESSION['first_name'];
     }
 ?>
-type="text"name="first_name" placeholder="First Name" required /></p>
-<p> <label>Last Name</label><br/>
+type="text"name="first_name" placeholder="First Name"  /></div>
+<div> <label>Last Name</label><br/>
 <input
 <?php
    if(isset($_SESSION['last_name'])) {
 echo "value=" . $_SESSION['last_name'];
     }
 ?>
-type="text"name="last_name" placeholder="Last Name"required /></p>
-<p> <label>Email</label><br/>
+type="text"name="last_name" placeholder="Last Name"  /></div>
+<div> <label>Email</label><br/>
 <input  <?php
    if(isset($_SESSION['email'])) {
 echo "value=" . $_SESSION['email'];
     }
-?> type="text"name="email" placeholder="Email" required  /> </p>
-<p> <label>Password</label><br/>
-<input type="password" name="password" placeholder="Password" required /> </p>
+?> type="text"name="email" placeholder="Email"  /> </div>
+<div> <label>Password</label><br/>
+<input type="password" name="password" placeholder="Password"  /> </div>
 
 
-<p>
+<div>
  <label>Gender</label><br/>
  <select name="gender" >
      <option value="">Select One</option>
@@ -64,9 +58,9 @@ echo "selected"; }
 ?> 
 >Female</option>
  </select>
-</p> 
+</div> 
 
-<p>
+<div>
  <label>Designation</label><br/>
  <select name="designation" >
  <option value="">Select One</option>
@@ -79,17 +73,17 @@ echo "selected"; }
 echo "selected"; }
 ?> >Patient</option>
  </select>
-</p> 
+</div> 
 
-<p>
+<div>
  <label>Department</label><br/>
  <input <?php
    if(isset($_SESSION['department'])) {
 echo "value=" . $_SESSION['department'];
     }
 ?> type="text" name="department" placeholder="Department" />
-</p>
-<p> <button type="submit">Register</button>  </p>
+</div>
+<div> <button type="submit" name="submit">Register</button>  </div>
 
 </form>
 

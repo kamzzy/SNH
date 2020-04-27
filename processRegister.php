@@ -1,24 +1,13 @@
-<?php 
-include_once('lib/header.php');
-// collecting  the data
- 
-// $session_error();
-// verifying the data, validation
+<?php include_once(session_start());
 
-$first_name = $_POST['first_name'];
-// != "" ? $_POST['first_name'] : $session_error; 
-$last_name = $_POST['last_name'];
-// != "" ? $_POST['last_name'] : $session_error;
-$email = $_POST['email']; 
-// != "" ? $_POST['email'] : $session_error;
-$password = $_POST['password']; 
-// != "" ? $_POST['password'] : $session_error; 
-$gender = $_POST['gender']; 
-// != "" ? $_POST['gender'] : $session_error; 
-$designation= $_POST['designation'] ;
-// != "" ? $_POST['designation'] : $session_error; 
-$department = $_POST['department'] ;
-// != "" ? $_POST['department'] : $session_error; 
+$first_name = 
+$last_name = 
+$email = 
+$password = 
+$gender = 
+$designation=
+$department = "" ;
+
 
 $_SESSION['first_name'] = $first_name;
 $_SESSION['last_name'] = $last_name;
@@ -28,44 +17,62 @@ $_SESSION['gender'] = $gender;
 $_SESSION['designation'] = $designation;
 $_SESSION['department'] = $department;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['submit'])) {
+
     // redirect back and display error
-    if (empty($_POST['email'])) {
-		$session_error= 'Please enter your email';
-	} elseif ($_POST['email']){
-	
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$session_error= 'Invalid Email Format';
-		}
-	}else{
-        $email = validator($_POST['email']);
+    if (empty($_POST['department'])) {
+		$session_error = 'department should be selected';
+	} else {
+        $department = test_input($_POST['department']);
     }
+    if (empty($_POST['designation'])) {
+		$session_error = 'designation should be selected';
+	} else {
+        $designation = test_input($_POST['designation']);
+    }
+    if (empty($_POST['gender'])) {
+		$session_error = 'gender should be selected';
+	} else {
+        $gender = test_input($_POST['gender']);
+    }
+    if (empty($_POST['password'])) {
+		$session_error = 'password should be filled';
+	} else {
+        $password= test_input($_POST['password']);
+    }
+    if (empty($_POST["email"])) {
+        $session_error = "Email is required";
+      } else {
+        $email = test_input($_POST["email"]);
+        // check if e-mail address is well-formed
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          $session_error = "Invalid email format";
+        }
+      } 
     if (empty($_POST['last_name'])) {
 		$session_error = 'Last Name should be filled';
-	} elseif ($_POST['last_name']) {
-		if (!preg_match('/^[a-zA-Z\s]+$/', $last_name)) {
-			$session_error = 'last Name can only contain letters,and white spaces';
+	} else{
+        $last_name = test_input($_POST['last_name']);
+		if (!preg_match('/^[a-zA-Z ]+$/', $last_name)) {
+			$session_error = 'last Name can only contain letters and white spaces';
 		}
-	} else {
-        $last_name = validator($_POST['last_name']);
-    }
+	} 
 
     if (empty($_POST['first_name'])) {
 		$session_error = 'First Name should be filled';
-	} elseif ($_POST['first_name']) {
-		if (!preg_match('/^[a-zA-Z\s]+$/', $first_name)) {
-			$session_error = 'First Name can only contain letters,and white spaces';
-		}
 	} else {
-        $first_name = validator($_POST['first_name']);
-    }
-    
-    
-   
-$_SESSION["error"] = $session_error;
+        $first_name = test_input($_POST['first_name']);
+		if (!preg_match('/^[a-zA-Z ]+$/', $first_name)) {
+			$session_error = 'First Name can only contain letters and white spaces';
+		}
+	} 
+
+
+    $_SESSION["error"] = $session_error;
 
     header("Location: register.php ");
-}else{
+}
+else{
     // count all users
     $allUsers = scandir("db/users/");
     $countAllUsers = count($allUsers);
@@ -85,6 +92,11 @@ $_SESSION["error"] = $session_error;
 
     ];
     // check if user already exists
+    
+    // assign the next ID to the new user
+    // count($users =>2, next should then be ID 3
+
+    // loop
      
     for($counter = 0; $counter < $countAllUsers; $counter++) {
         $currentUser = $allUsers[$counter];
@@ -111,12 +123,9 @@ $_SESSION["error"] = $session_error;
     header("Location: login.php");
 }
 
-function validator($formData) {
-    $formData = trim($formData);
-    $formData = stripslashes($formData);
-    $formData = htmlspecialchars($formData);
-    return $formData;
- }
-
-
-?>
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    // $data = htmlspecialchars($data);
+    return $data;
+  }
